@@ -9,9 +9,7 @@ struct Node {
     Node(T v) : value{v} {}
     int length() {
         int count = 0;
-        for (auto curr = this; curr != nullptr; curr = curr->next) {
-            ++count;
-        }
+        for (auto c = this; c != nullptr; c = c->next, ++count);
         return count;
     }
 };
