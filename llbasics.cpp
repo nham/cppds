@@ -14,6 +14,29 @@ struct Node {
     }
 };
 
+template <typename T>
+struct LinkedList {
+    Node<T> *head = nullptr;
+    int n;
+
+    LinkedList() = default;
+    LinkedList(Node<T> *n) : head{n}, n{n->length()} {}
+
+    void addFront(T v) {
+        auto newhead = new Node<T>(v);
+        newhead->next = this->head;
+        this->head = newhead;
+        this->n += 1;
+    }
+
+    T removeFront() {
+        auto oldhead = this->head;
+        this->head = this->head->next;
+        delete oldhead;
+        this->n -= 1;
+    }
+};
+
 Node<int>* buildOneTwoThree() {
     Node<int>* one = new Node<int>(1);
     Node<int>* two = new Node<int>(2);
@@ -32,5 +55,11 @@ int main() {
     std::cout << head->next->next->value << '\n';
     std::cout << (head->next->next->next == nullptr) << '\n';
     std::cout << "length: " << head->length() << '\n';
-}
 
+    auto list = LinkedList<int>(head);
+    std::cout << "size: " << list.n << '\n';
+    list.addFront(0);
+
+    std::cout << list.head->value << '\n';
+    std::cout << "new size: " << list.n << '\n';
+}
