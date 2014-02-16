@@ -32,8 +32,10 @@ struct LinkedList {
     T removeFront() {
         auto oldhead = this->head;
         this->head = this->head->next;
+        auto val = oldhead->value;
         delete oldhead;
         this->n -= 1;
+        return val;
     }
 };
 
@@ -62,4 +64,23 @@ int main() {
 
     std::cout << list.head->value << '\n';
     std::cout << "new size: " << list.n << '\n';
+
+    std::cout << "-------------\n";
+    auto list2 = LinkedList<bool>();
+    std::cout << list2.n << '\n';
+    list2.addFront(true);
+    std::cout << list2.n << '\n';
+    list2.addFront(false);
+    std::cout << list2.n << '\n';
+    list2.addFront(true);
+    std::cout << list2.n << '\n';
+    list2.addFront(false);
+    std::cout << list2.n << '\n';
+
+    bool tmp;
+
+    for(int i = 0; i < 4; i++) {
+        tmp = list2.removeFront();
+        std::cout << "removed " << tmp << ". New size is: " << list2.n << '\n';
+    }
 }
