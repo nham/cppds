@@ -65,6 +65,20 @@ struct SLList {
         this->n += 1;
     }
 
+    T& getNth(int n) {
+        auto c = this->head;
+        for (int i = 0; i < n; c = c->next, ++i);
+        return c->value;
+    }
+
+    // removes all nodes
+    void clear() {
+        int size = this->n;
+        for (int i = 0; i < size; ++i) {
+            this->remove_first();
+        }
+    }
+
     void print() {
         if (this->n == 0) {
             std::cout << '\n';
@@ -89,6 +103,19 @@ Node<int>* buildOneTwoThree() {
     return one;
 }
 
+// number of occurrences of v in n
+template <typename T>
+int count(Node<T> *n, T v) {
+    int count = 0;
+    for (auto c = n; c != nullptr; c = c->next) {
+        if (c->value == v) {
+            count += 1;
+        }
+    }
+    return count;
+}
+
+
 int main() {
     auto head = buildOneTwoThree();
 
@@ -110,6 +137,15 @@ int main() {
     std::cout << "after add_last(4): ";
     list.print();
 
+    std::cout << "number of fives: " << count(list.head, 5) << '\n';
+    std::cout << "number of fours: " << count(list.head, 4) << '\n';
+
+    std::cout << "getNth(3): " << list.getNth(3) << '\n';
+
+    list.clear();
+    std::cout << "after clear(): ";
+    list.print();
+
     std::cout << "\n-------------\n";
     auto list2 = SLList<bool>();
     list2.print();
@@ -121,6 +157,9 @@ int main() {
     list2.print();
     list2.add_first(false);
     list2.print();
+
+    std::cout << "number of trues: " << count(list2.head, true) << '\n';
+    std::cout << "getNth(2): " << list2.getNth(2) << '\n';
 
 
     list2.remove_first();
