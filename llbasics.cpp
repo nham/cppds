@@ -1,6 +1,8 @@
 #include <iostream>
 // Following along with:
 //     http://cslibrary.stanford.edu/103/LinkedListBasics.pdf
+// this also solves problems in:
+//     http://cslibrary.stanford.edu/105/LinkedListProblems.pdf
 
 template <typename T>
 struct Node {
@@ -65,10 +67,25 @@ struct SLList {
         this->n += 1;
     }
 
-    T& getNth(int n) {
+    void append(SLList *list) {
+        this->n += list->n;
+        this->tail->next = list->head;
+        this->tail = list->tail;
+    }
+
+    T getNth(int n) {
         auto c = this->head;
         for (int i = 0; i < n; c = c->next, ++i);
         return c->value;
+    }
+
+    void insertNth(T v, int n) {
+        auto c = this->head;
+        for (int i = 0; i < n-1; c = c->next, ++i);
+        auto node = new Node<T>(v);
+        node->next = c->next;
+        c->next = node;
+        this->n += 1;
     }
 
     // removes all nodes
@@ -142,9 +159,10 @@ int main() {
 
     std::cout << "getNth(3): " << list.getNth(3) << '\n';
 
-    list.clear();
-    std::cout << "after clear(): ";
+    list.insertNth(7, 3);
+    std::cout << "after insertNth(7, 3): ";
     list.print();
+
 
     std::cout << "\n-------------\n";
     auto list2 = SLList<bool>();
@@ -170,4 +188,18 @@ int main() {
     list2.print();
     list2.remove_first();
     list2.print();
+
+
+    auto list3 = SLList<int>();
+    list3.add_first(8);
+    list3.add_first(13);
+    list3.add_first(21);
+    list3.print();
+
+    list3.append(&list);
+    list3.print();
+
+    list3.clear();
+    std::cout << "list3 after clear(): ";
+    list3.print();
 }
