@@ -7,6 +7,13 @@ struct Node {
     T value;
     Node *next = nullptr;
     Node(T v) : value{v} {}
+    int length() {
+        int count = 0;
+        for (auto curr = this; curr != nullptr; curr = curr->next) {
+            ++count;
+        }
+        return count;
+    }
 };
 
 Node<int>* buildOneTwoThree() {
@@ -26,5 +33,6 @@ int main() {
     std::cout << head->next->value << '\n';
     std::cout << head->next->next->value << '\n';
     std::cout << (head->next->next->next == nullptr) << '\n';
+    std::cout << "length: " << head->length() << '\n';
 }
 
