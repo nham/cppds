@@ -1,6 +1,7 @@
 // http://cslibrary.stanford.edu/110/BinaryTrees.pdf
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 template <typename T>
 struct Node {
@@ -62,6 +63,10 @@ struct BinTree {
     void printPaths() {
         std::string x = "";
         BinTree::_printPaths(root, x);
+    }
+
+    void mirror() {
+        BinTree::_mirror(root);
     }
 
 private:
@@ -126,6 +131,16 @@ private:
         }
 
     }
+
+    static void _mirror(Node<T> *node) {
+        if (node == nullptr) {
+            return;
+        } 
+
+        _mirror(node->left);
+        _mirror(node->right);
+        std::swap(node->left, node->right);
+    }
 };
 
 
@@ -166,4 +181,14 @@ int main() {
     tree.insert(4);
     std::cout << "after insert(4):\n";
     tree.printPaths();
+
+    std::cout << "-------------\n";
+    std::cout << "traverse in order: ";
+    tree.traverse_inorder();
+    std:: cout << '\n';
+    tree.mirror();
+    std::cout << "traverse in order: ";
+    tree.traverse_inorder();
+    std:: cout << '\n';
+
 }
