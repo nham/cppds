@@ -37,18 +37,6 @@ struct Node {
         }
     }
 
-    int size() {
-        int size = 1;
-        if (this->left != nullptr) {
-            size += this->left->size();
-        }
-
-        if (this->right != nullptr) {
-            size += this->right->size();
-        }
-
-        return size;
-    }
 };
 
 template <typename T>
@@ -56,8 +44,7 @@ struct BinTree {
     Node<T> *root = nullptr;
 
     bool lookup(T v) {
-        if (root == nullptr) return false;
-        return root->lookup(v);
+        return BinTree::_lookup(root, v);
     }
 
     void insert(T v) {
@@ -69,20 +56,41 @@ struct BinTree {
     }
 
     int size() {
-        if (root == nullptr) return 0;
-        return root->size();
+        return BinTree::_size(root);
     }
 
     int maxDepth() {
-        return _maxDepth(root);
+        return BinTree::_maxDepth(root);
+    }
+
+    void traverse_inorder() {
+
+
     }
 
 private:
-    int _maxDepth(Node<T> *node) {
+    static int _maxDepth(Node<T> *node) {
         if (node == nullptr) {
             return 0;
         } else {
             return 1 + std::max(_maxDepth(node->left), _maxDepth(node->right));
+        }
+    }
+
+    static int _size(Node<T> *node) {
+        if (node == nullptr) return 0;
+        return 1 + _size(node->left) + _size(node->right);
+    }
+
+    static bool _lookup(Node<T> *node, T v) {
+        if (node == nullptr) {
+            return false;
+        } else if (node->value == v) {
+            return true;
+        } else if (v < node->value) {
+            return _lookup(node->left, v);
+        } else {
+            return _lookup(node->right, v);
         }
     }
 };
