@@ -64,8 +64,7 @@ struct BinTree {
     }
 
     void traverse_inorder() {
-
-
+        BinTree::_traverse_inorder(root);
     }
 
 private:
@@ -93,6 +92,16 @@ private:
             return _lookup(node->right, v);
         }
     }
+
+    static void _traverse_inorder(Node<T> *node) {
+        if (node == nullptr) {
+            return;
+        } else {
+            _traverse_inorder(node->left);
+            std::cout << node->value << ' ';
+            _traverse_inorder(node->right);
+        }
+    }
 };
 
 
@@ -100,6 +109,10 @@ int main() {
     auto tree = BinTree<int>();
     std::cout << "size: " << tree.size() << '\n';
     std:: cout<< "maxDepth: " << tree.maxDepth() << '\n';
+    std::cout << "traverse in order: ";
+    tree.traverse_inorder();
+    std:: cout << '\n';
+
     tree.insert(2);
     tree.insert(1);
     tree.insert(3);
@@ -114,5 +127,9 @@ int main() {
     tree.insert(5);
     tree.insert(7);
     std::cout << "size: " << tree.size() << '\n';
-    std:: cout<< "maxDepth: " << tree.maxDepth() << '\n';
+    std::cout << "maxDepth: " << tree.maxDepth() << '\n';
+
+    std::cout << "traverse in order: ";
+    tree.traverse_inorder();
+    std:: cout << '\n';
 }
