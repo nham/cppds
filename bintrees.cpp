@@ -9,19 +9,6 @@ struct Node {
     Node *right = nullptr;
     Node(T v) : value{v} {}
 
-    bool lookup(T v) {
-        if (this == nullptr) {
-            return false;
-        } else if (this->value == v) {
-            return true;
-        } else if (v < this->value) {
-            return this->left->lookup(v);
-        } else {
-            return this->right->lookup(v);
-        }
-
-    }
-
     void insert(T v) {
         if (v < value) {
             if (this->left == nullptr) {
@@ -78,7 +65,7 @@ struct BinTree {
     }
 
 private:
-    static int _maxDepth(Node<T> *node) {
+    static int _maxDepth(Node<T> const* node) {
         if (node == nullptr) {
             return 0;
         } else {
@@ -86,12 +73,12 @@ private:
         }
     }
 
-    static int _size(Node<T> *node) {
+    static int _size(Node<T> const* node) {
         if (node == nullptr) return 0;
         return 1 + _size(node->left) + _size(node->right);
     }
 
-    static bool _lookup(Node<T> *node, T v) {
+    static bool _lookup(Node<T> const* node, T v) {
         if (node == nullptr) {
             return false;
         } else if (node->value == v) {
@@ -103,7 +90,7 @@ private:
         }
     }
 
-    static void _traverse_inorder(Node<T> *node) {
+    static void _traverse_inorder(Node<T> const* node) {
         if (node == nullptr) {
             return;
         } else {
@@ -113,7 +100,7 @@ private:
         }
     }
 
-    static bool _hasPathSum(Node<T> *node, int sum) {
+    static bool _hasPathSum(Node<T> const* node, int sum) {
         // strategy: enumerate all root-to-leaf paths (or rather the sum of 
         // the r-t-l paths) and check
         if (node == nullptr) {
@@ -124,7 +111,7 @@ private:
         }
     }
 
-    static void _printPaths(Node<T> *node, std::string const& path) {
+    static void _printPaths(Node<T> const* node, std::string const& path) {
         if (node == nullptr) {
             return;
         } 
