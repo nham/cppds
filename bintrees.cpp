@@ -14,11 +14,27 @@ struct Node {
         } else if (this->value == v) {
             return true;
         } else if (v < this->value) {
-            return lookup(this->left);
+            return this->left->lookup(v);
         } else {
-            return lookup(this->right);
+            return this->right->lookup(v);
         }
 
+    }
+
+    void insert(T v) {
+        if (v < value) {
+            if (this->left == nullptr) {
+                this->left = new Node<T>(v);
+            } else {
+                this->left->insert(v);
+            }
+        } else {
+            if (this->right == nullptr) {
+                this->right = new Node<T>(v);
+            } else {
+                this->right->insert(v);
+            }
+        }
     }
 };
 
@@ -26,14 +42,16 @@ template <typename T>
 struct BinTree {
     Node<T> *root = nullptr;
 
+    bool lookup(T v) {
+        if (root == nullptr) return false;
+        return root->lookup(v);
+    }
 
     void insert(T v) {
         if (root == nullptr) {
             root = new Node<T>(v);
-        } else if (v < root->value) {
-            root->left->insert(v);
         } else {
-            root->right->insert(v);
+            root->insert(v);
         }
 
     }
@@ -49,4 +67,6 @@ int main() {
     std::cout << tree.root->value << '\n';
     std::cout << tree.root->left->value << '\n';
     std::cout << tree.root->right->value << '\n';
+    std::cout << "lookup 1: " << tree.lookup(1) << '\n';
+    std::cout << "lookup 7: " << tree.lookup(7) << '\n';
 }
