@@ -36,6 +36,19 @@ struct Node {
             }
         }
     }
+
+    int size() {
+        int size = 1;
+        if (this->left != nullptr) {
+            size += this->left->size();
+        }
+
+        if (this->right != nullptr) {
+            size += this->right->size();
+        }
+
+        return size;
+    }
 };
 
 template <typename T>
@@ -53,13 +66,18 @@ struct BinTree {
         } else {
             root->insert(v);
         }
+    }
 
+    int size() {
+        if (root == nullptr) return 0;
+        return root->size();
     }
 };
 
 
 int main() {
     auto tree = BinTree<int>();
+    std::cout << "size: " << tree.size() << '\n';
     tree.insert(2);
     tree.insert(1);
     tree.insert(3);
@@ -69,4 +87,5 @@ int main() {
     std::cout << tree.root->right->value << '\n';
     std::cout << "lookup 1: " << tree.lookup(1) << '\n';
     std::cout << "lookup 7: " << tree.lookup(7) << '\n';
+    std::cout << "size: " << tree.size() << '\n';
 }
