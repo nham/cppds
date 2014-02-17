@@ -67,6 +67,10 @@ struct BinTree {
         BinTree::_traverse_inorder(root);
     }
 
+    bool hasPathSum(T v) {
+        return BinTree::_hasPathSum(root, v);
+    }
+
 private:
     static int _maxDepth(Node<T> *node) {
         if (node == nullptr) {
@@ -102,6 +106,18 @@ private:
             _traverse_inorder(node->right);
         }
     }
+
+    static bool _hasPathSum(Node<T> *node, int sum) {
+        // strategy: enumerate all root-to-leaf paths (or rather the sum of 
+        // the r-t-l paths) and check
+        if (node == nullptr) {
+            return sum == 0;
+        } else {
+            sum -= node->value;
+            return _hasPathSum(node->left, sum) || _hasPathSum(node->right, sum);
+        }
+
+    }
 };
 
 
@@ -132,4 +148,9 @@ int main() {
     std::cout << "traverse in order: ";
     tree.traverse_inorder();
     std:: cout << '\n';
+
+    std::cout << "hasPathSum\n";
+    std::cout << tree.hasPathSum(3) << '\n';
+    std::cout << tree.hasPathSum(4) << '\n';
+    std::cout << tree.hasPathSum(17) << '\n';
 }
