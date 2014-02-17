@@ -1,5 +1,6 @@
 // http://cslibrary.stanford.edu/110/BinaryTrees.pdf
 #include <iostream>
+#include <string>
 
 template <typename T>
 struct Node {
@@ -71,6 +72,11 @@ struct BinTree {
         return BinTree::_hasPathSum(root, v);
     }
 
+    void printPaths() {
+        std::string x = "";
+        BinTree::_printPaths(root, x);
+    }
+
 private:
     static int _maxDepth(Node<T> *node) {
         if (node == nullptr) {
@@ -116,6 +122,21 @@ private:
             sum -= node->value;
             return _hasPathSum(node->left, sum) || _hasPathSum(node->right, sum);
         }
+    }
+
+    static void _printPaths(Node<T> *node, std::string const& path) {
+        if (node == nullptr) {
+            return;
+        } 
+
+        std::string x = path + std::to_string(node->value) + " ";
+        
+        if (node->left == nullptr && node->right == nullptr) {
+            std::cout << "Path: " << x << '\n';
+        } else {
+            _printPaths(node->left, x);
+            _printPaths(node->right, x);
+        }
 
     }
 };
@@ -153,4 +174,9 @@ int main() {
     std::cout << tree.hasPathSum(3) << '\n';
     std::cout << tree.hasPathSum(4) << '\n';
     std::cout << tree.hasPathSum(17) << '\n';
+
+    tree.printPaths();
+    tree.insert(4);
+    std::cout << "after insert(4):\n";
+    tree.printPaths();
 }
