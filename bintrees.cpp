@@ -72,12 +72,26 @@ struct BinTree {
         if (root == nullptr) return 0;
         return root->size();
     }
+
+    int maxDepth() {
+        return _maxDepth(root);
+    }
+
+private:
+    int _maxDepth(Node<T> *node) {
+        if (node == nullptr) {
+            return 0;
+        } else {
+            return 1 + std::max(_maxDepth(node->left), _maxDepth(node->right));
+        }
+    }
 };
 
 
 int main() {
     auto tree = BinTree<int>();
     std::cout << "size: " << tree.size() << '\n';
+    std:: cout<< "maxDepth: " << tree.maxDepth() << '\n';
     tree.insert(2);
     tree.insert(1);
     tree.insert(3);
@@ -88,4 +102,9 @@ int main() {
     std::cout << "lookup 1: " << tree.lookup(1) << '\n';
     std::cout << "lookup 7: " << tree.lookup(7) << '\n';
     std::cout << "size: " << tree.size() << '\n';
+    std:: cout<< "maxDepth: " << tree.maxDepth() << '\n';
+    tree.insert(5);
+    tree.insert(7);
+    std::cout << "size: " << tree.size() << '\n';
+    std:: cout<< "maxDepth: " << tree.maxDepth() << '\n';
 }
