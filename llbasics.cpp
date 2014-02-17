@@ -73,6 +73,30 @@ struct SLList {
         this->tail = list->tail;
     }
 
+    // iterative reverse
+    void reverse_iter() {
+        if (this->n == 0) return;
+
+        this->tail = this->head;
+        auto c = this->head;
+        Node<T> *rev = nullptr;
+        Node<T> *tmp = nullptr;
+        while (c != nullptr) {
+            tmp = c->next;
+            c->next = rev;
+            rev = c;
+            c = tmp;
+        }
+        this->head = rev;
+    }
+
+    void reverse_rec() {
+        if (this->n == 0) return;
+        auto tmp = this->tail;
+        this->tail = reverse_rec(this->head);
+        this->head = tmp;
+    }
+
     T getNth(int n) {
         auto c = this->head;
         for (int i = 0; i < n; c = c->next, ++i);
@@ -108,6 +132,16 @@ struct SLList {
         }
         std::cout << '\n';
     }
+
+    private:
+        Node<T>* reverse_rec(Node<T> *node) {
+            if (node == nullptr || node->next == nullptr) return node;
+
+            auto tail = reverse_rec(node->next);
+            node->next = nullptr;
+            tail->next = node;
+            return node;
+        }
 };
 
 Node<int>* buildOneTwoThree() {
@@ -199,7 +233,20 @@ int main() {
     list3.append(&list);
     list3.print();
 
+    list3.reverse_iter();
+    list3.print();
+
+    list3.reverse_rec();
+    list3.print();
+
     list3.clear();
     std::cout << "list3 after clear(): ";
     list3.print();
+
+    auto list4 = SLList<int>();
+    list4.add_first(1);
+    list4.add_first(2);
+    list4.print();
+    list4.reverse_rec();
+    list4.print();
 }
