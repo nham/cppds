@@ -28,6 +28,13 @@ struct Node {
     }
 };
 
+
+template <typename T>
+void join(Node<T> *a, Node<T> *b) {
+    a->right = b;
+    b->left = a;
+}
+
 // take an ordered binary tree, turn it into a doubly-linked circular list.
 // the left pointer becomes *prev, the right pointer becomes *next
 // the list must be in increasing order.
@@ -36,22 +43,15 @@ std::tuple<Node<T>*, Node<T>*> treeToList(Node<T> *root, Node<T> *parent) {
     if (root == nullptr) return 
         std::make_tuple(root, root);
 
-    if (root->left == nullptr && root->right == nullptr) 
-        return std::make_tuple (root, root);
-
     Node<T>* minL, *maxL, *minR, *maxR;
     std::tie(minL, maxL) = treeToList(root->left, root);
     std::tie(minR, maxR) = treeToList(root->right, root);
 
-    if (maxL != nullptr) {
-        maxL->right = root;
-        root->left = maxL;
-    }
+    if (maxL != nullptr)
+        join(maxL, root);
 
-    if (minR != nullptr) {
-        minR->left = root;
-        root->right = minR;
-    }
+    if (minR != nullptr)
+        join(root, minR);
 
     Node<T>* min = minL;
     Node<T>* max = maxR;
@@ -61,10 +61,8 @@ std::tuple<Node<T>*, Node<T>*> treeToList(Node<T> *root, Node<T> *parent) {
     if (max == nullptr)
         max = root;
 
-    if (parent == nullptr) {
-        min->left = max;
-        max->right = min;
-    }
+    if (parent == nullptr)
+        join(max, min);
 
     return std::make_tuple(min, max);
 }
