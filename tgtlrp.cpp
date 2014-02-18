@@ -43,11 +43,15 @@ std::tuple<Node<T>*, Node<T>*> treeToList(Node<T> *root, Node<T> *parent) {
     std::tie(minL, maxL) = treeToList(root->left, root);
     std::tie(minR, maxR) = treeToList(root->right, root);
 
-    if (maxL != nullptr)
+    if (maxL != nullptr) {
         maxL->right = root;
+        root->left = maxL;
+    }
 
-    if (minR != nullptr)
+    if (minR != nullptr) {
         minR->left = root;
+        root->right = minR;
+    }
 
     Node<T>* min = minL;
     Node<T>* max = maxR;
@@ -68,9 +72,9 @@ std::tuple<Node<T>*, Node<T>*> treeToList(Node<T> *root, Node<T> *parent) {
 template <typename T>
 void printCircularList(Node<T>* head) {
     if (head == nullptr) return;
-    std::cout << head->value << " ";
+    std::cout << head->value << "(" << head->left->value << ", " << head->right->value << ")\n";
     for(auto c = head->right; c != head; c = c->right) {
-        std::cout << c->value << " ";
+        std::cout << c->value << "(" << c->left->value << ", " << c->right->value << ")\n";
     }
     std::cout << '\n';
 }
@@ -88,5 +92,4 @@ int main() {
     std::tie(node, std::ignore) = treeToList(&tree, node);
 
     printCircularList(node);
-
 }
